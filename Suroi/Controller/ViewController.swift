@@ -33,30 +33,27 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             webView.load(request)
         }
     }
-
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {
+        guard let url = navigationAction.request.url, let host = url.host else {
             decisionHandler(.allow)
             return
         }
 
-        let urlModel = URLModel()
-        if urlModel.isInternalURL(url) {
-            decisionHandler(.allow)
-        } else if urlModel.isExternalURL(url) {
+        if host.hasSuffix("suroi.io") && host != "discord.suroi.io" {
+            decisionHandler(.allow) // prevent discord.suroi.io from opening in webview
+        } else {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
             decisionHandler(.cancel)
-        } else {
-            decisionHandler(.allow)
         }
     }
 
     
     // Background logic
-    let backgroundManager = BackgroundManager()
+    let backgroundModel = BackgroundModel()
 
     func updateBackground(forGameMode mode: String) {
-        backgroundManager.updateBackground(forGameMode: mode, in: backgroundImageView)
+        backgroundModel.updateBackground(forGameMode: mode, in: backgroundImageView)
     }
 
     func modeFetcher() {

@@ -1,6 +1,6 @@
 import UIKit
 
-class BackgroundManager {
+class BackgroundModel {
 
     func backgroundImageName(forGameMode mode: String) -> String {
         switch mode {
