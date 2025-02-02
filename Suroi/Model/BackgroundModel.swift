@@ -20,4 +20,3 @@ class BackgroundModel {
         imageView.image = UIImage(named: imageName)
     }
 }
-// blehh
