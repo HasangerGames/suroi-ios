@@ -120,13 +120,19 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             alert.addTextField { textField in
                 textField.text = defaultText
             }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
                 completionHandler(nil)
-            }))
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            })
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in
                 let userInput = alert.textFields?.first?.text
                 completionHandler(userInput)
-            }))
+            })
+
+            alert.addAction(cancelAction)
+            alert.addAction(okAction)
+            alert.preferredAction = okAction
+            alert.view.tintColor = UIColor.systemBlue
             self?.present(alert, animated: true, completion: nil)
         }
     }
