@@ -114,29 +114,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
     
     // JavaScript dialogs handling
-    func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                completionHandler()
-            }))
-            self?.present(alert, animated: true, completion: nil)
-        }
-    }
-
-    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: "Confirm", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                completionHandler(false)
-            }))
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                completionHandler(true)
-            }))
-            self?.present(alert, animated: true, completion: nil)
-        }
-    }
-
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
         DispatchQueue.main.async { [weak self] in
             let alert = UIAlertController(title: "Enter your team code:", message: nil, preferredStyle: .alert)
