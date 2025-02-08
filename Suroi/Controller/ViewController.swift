@@ -21,7 +21,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         webView.navigationDelegate = self
         webView.uiDelegate = self
         offlineImageView.isHidden = true
-        // webView.pageZoom = 0.9
         modeFetcher()
         loadInitialURL()
     }
