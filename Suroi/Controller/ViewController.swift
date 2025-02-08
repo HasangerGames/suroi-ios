@@ -139,7 +139,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
         DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: "Prompt", message: prompt, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Enter your team code:", message: nil, preferredStyle: .alert)
             alert.addTextField { textField in
                 textField.text = defaultText
             }
