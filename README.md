@@ -15,7 +15,7 @@ Suroi is an open-source 2D battle royale game inspired by [surviv.io](https://su
 [suroi.io](https://suroi.io)
 
 ## Donate!
-Any amount helps! All donation money goes towards keeping the servers running.
+Any amount helps! All donation money goes towards keeping the servers running and the app being available on the App Store.
 
 [ko-fi.com/suroi](https://ko-fi.com/suroi)
 
