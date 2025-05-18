@@ -13,3 +13,18 @@ xcuserdata/
 # Optional editor swap files
 *.swp
 
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserdatad
+*.xcuserdata
+
+# Ignore workspace-specific data
+*.xcworkspace/xcuserdata/
+
+# Ignore macOS system files
+.DS_Store
+
+# Optional editor swap files
+*.swp
+
