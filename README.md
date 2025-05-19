@@ -28,4 +28,4 @@ Start by installing [Xcode](https://developer.apple.com/xcode/). You will need a
 ## Development
 Once installed, click on "Clone Git Repository". Paste [this URL](https://github.com/HasangerGames/suroi-ios.git) into the "Search or enter repository URL" field.
 
-Once the project has loaded, select your device and run the application.
+Once the project has loaded, select your testing device and run the application locally.
