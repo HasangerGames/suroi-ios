@@ -10,6 +10,8 @@ class BackgroundModel {
             return "fall_background"
         case "halloween":
             return "halloween_background"
+        case "hunted":
+            return "hunted_background"
         default:
             return "normal_background"
         }
