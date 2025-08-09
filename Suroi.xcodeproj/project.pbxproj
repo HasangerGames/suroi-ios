@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		814C2EE12E47E65D005CB5FD /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814C2EE02E47E65D005CB5FD /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		814C2EE02E47E65D005CB5FD /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		81637A5D2DDB715D002A60E6 /* Suroi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suroi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -36,16 +41,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				814C2EE12E47E65D005CB5FD /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		814C2EDF2E47E65D005CB5FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				814C2EE02E47E65D005CB5FD /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		81637A542DDB715D002A60E6 = {
 			isa = PBXGroup;
 			children = (
 				81637A5F2DDB715D002A60E6 /* Suroi */,
+				814C2EDF2E47E65D005CB5FD /* Frameworks */,
 				81637A5E2DDB715D002A60E6 /* Products */,
 			);
 			sourceTree = "<group>";
