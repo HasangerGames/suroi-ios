@@ -11,6 +11,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var offlineImageView: UIImageView!
+    let redirects: [String] = ["discord.suroi.io", "suroi.io/privacy", "suroi.io/rules"]
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -40,8 +41,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             return
         }
 
-        if host.hasSuffix("suroi.io") && host != "discord.suroi.io" {
-            decisionHandler(.allow) // prevent discord.suroi.io from opening in webview
+        if host.hasSuffix("suroi.io") && !redirects.contains(host) {
+            decisionHandler(.allow) // prevent excluded hosts from opening in webview
         } else {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
             decisionHandler(.cancel)
