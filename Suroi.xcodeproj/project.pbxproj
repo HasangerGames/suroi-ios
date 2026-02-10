@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		814C2EE12E47E65D005CB5FD /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814C2EE02E47E65D005CB5FD /* WebKit.framework */; };
+		81E3482B2F3A1F3900CB9BCD /* TLDExtractSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 81E3482A2F3A1F3900CB9BCD /* TLDExtractSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				814C2EE12E47E65D005CB5FD /* WebKit.framework in Frameworks */,
+				81E3482B2F3A1F3900CB9BCD /* TLDExtractSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +95,7 @@
 			);
 			name = Suroi;
 			packageProductDependencies = (
+				81E3482A2F3A1F3900CB9BCD /* TLDExtractSwift */,
 			);
 			productName = Suroi;
 			productReference = 81637A5D2DDB715D002A60E6 /* Suroi.app */;
@@ -122,6 +125,9 @@
 			);
 			mainGroup = 81637A542DDB715D002A60E6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				81E348292F3A1F3800CB9BCD /* XCRemoteSwiftPackageReference "TLDExtractSwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 81637A5E2DDB715D002A60E6 /* Products */;
 			projectDirPath = "";
@@ -370,6 +376,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		81E348292F3A1F3800CB9BCD /* XCRemoteSwiftPackageReference "TLDExtractSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gumob/TLDExtractSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		81E3482A2F3A1F3900CB9BCD /* TLDExtractSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81E348292F3A1F3800CB9BCD /* XCRemoteSwiftPackageReference "TLDExtractSwift" */;
+			productName = TLDExtractSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 81637A552DDB715D002A60E6 /* Project object */;
 }

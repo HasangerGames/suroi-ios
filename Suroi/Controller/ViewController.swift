@@ -1,5 +1,6 @@
 import UIKit
 import Foundation
+import TLDExtractSwift
 @preconcurrency import WebKit
 
 struct ServerResponse: Decodable {
@@ -11,7 +12,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var offlineImageView: UIImageView!
-    let redirects: [String] = ["discord.suroi.io", "suroi.io/privacy", "suroi.io/rules"]
+    let extractor = try! TLDExtract()
+    let redirects: [String] = ["discord.suroi.io", "suroi.io/privacy", "suroi.io/rules", "suroi.io/changelog/", "suroi.wiki.gg"]
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -40,12 +42,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             decisionHandler(.allow)
             return
         }
-
-        if host.hasSuffix("suroi.io") && !redirects.contains(host) {
-            decisionHandler(.allow) // prevent excluded hosts from opening in webview
-        } else {
+        
+        guard let result: TLDResult = extractor.parse(host) else {
+            return
+        }
+        
+        if result.rootDomain == "Optional(suroi.io)" && !redirects.contains(host) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
             decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow) // prevent excluded hosts from opening in webview
         }
     }
 
