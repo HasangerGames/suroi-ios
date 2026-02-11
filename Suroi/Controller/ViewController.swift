@@ -38,20 +38,36 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url, let host = url.host else {
+        guard let url = navigationAction.request.url else {
             decisionHandler(.allow)
             return
         }
         
-        guard let result: TLDResult = extractor.parse(host) else {
+        // Check if URL matches any redirect pattern
+        let urlString = url.absoluteString
+        for redirect in redirects {
+            if urlString.contains(redirect) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+                return
+            }
+        }
+        
+        // Check domain
+        guard let host = url.host,
+              let result = extractor.parse(host) else {
+            // If we can't parse, open in Safari to be safe
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            decisionHandler(.cancel)
             return
         }
         
-        if result.rootDomain == "Optional(suroi.io)" && !redirects.contains(host) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            decisionHandler(.cancel)
+        // Keep only suroi.io in webview, redirect everything else
+        if result.rootDomain == "suroi.io" {
+            decisionHandler(.allow) // Stay in webview
         } else {
-            decisionHandler(.allow) // prevent excluded hosts from opening in webview
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            decisionHandler(.cancel) // Redirect to Safari
         }
     }
 
