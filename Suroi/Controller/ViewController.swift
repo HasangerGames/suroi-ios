@@ -43,6 +43,13 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             return
         }
         
+        // Handle mailto links
+        if url.scheme == "mailto" {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            decisionHandler(.cancel)
+            return
+        }
+        
         // Check if URL matches any redirect pattern
         let urlString = url.absoluteString
         for redirect in redirects {
