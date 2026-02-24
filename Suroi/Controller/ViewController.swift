@@ -13,7 +13,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var offlineImageView: UIImageView!
     let extractor = try! TLDExtract()
-    let redirects: [String] = ["discord.suroi.io", "suroi.io/privacy", "suroi.io/rules", "suroi.io/changelog/", "suroi.wiki.gg"]
+    private let linkRouter = SuroiExternalLinkRouter()
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -21,11 +21,15 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        offlineImageView.isHidden = true
         webView.navigationDelegate = self
         webView.uiDelegate = self
-        offlineImageView.isHidden = true
         modeFetcher()
         loadInitialURL()
+    }
+
+    private func openExternally(_ url: URL) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
     
@@ -37,47 +41,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         }
     }
     
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.allow)
-            return
-        }
-        
-        // Handle mailto links
-        if url.scheme == "mailto" {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            decisionHandler(.cancel)
-            return
-        }
-        
-        // Check if URL matches any redirect pattern
-        let urlString = url.absoluteString
-        for redirect in redirects {
-            if urlString.contains(redirect) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                decisionHandler(.cancel)
-                return
-            }
-        }
-        
-        // Check domain
-        guard let host = url.host,
-              let result = extractor.parse(host) else {
-            // If we can't parse, open in Safari to be safe
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            decisionHandler(.cancel)
-            return
-        }
-        
-        // Keep only suroi.io in webview, redirect everything else
-        if result.rootDomain == "suroi.io" {
-            decisionHandler(.allow) // Stay in webview
-        } else {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            decisionHandler(.cancel) // Redirect to Safari
-        }
-    }
-
     
     // Background logic
     let backgroundModel = BackgroundModel()
@@ -142,7 +105,36 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     }
 
     
-    // JavaScript dialogs handling
+    // MARK: - URL routing (in-webview vs Safari)
+
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+        switch linkRouter.destination(for: url) {
+        case .inWebView:
+            decisionHandler(.allow)
+        case .externalBrowser:
+            openExternally(url)
+            decisionHandler(.cancel)
+        }
+    }
+
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        // target="_blank" / window.open: route by same rules
+        if let url = navigationAction.request.url {
+            if linkRouter.destination(for: url) == .externalBrowser {
+                openExternally(url)
+            } else {
+                webView.load(URLRequest(url: url))
+            }
+        }
+        return nil
+    }
+
+    // MARK: - JavaScript dialogs
+
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Void) {
         DispatchQueue.main.async { [weak self] in
             let alert = UIAlertController(title: "Enter your team code:", message: nil, preferredStyle: .alert)
